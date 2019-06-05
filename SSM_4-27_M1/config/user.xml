@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+
+    <!-- statementId -->
+    <select id="findUserById" parameterType="int" resultType="com.sunzhen.mybatis.pojo.User">
+      select * from user where id = #{id}
+    </select>
+
+    <select id="findUserByUsername" parameterType="string" resultType="com.sunzhen.mybatis.pojo.User">
+        select * from user where username like '%${value}%'
+    </select>
+
+    <insert id="insertUser" parameterType="com.sunzhen.mybatis.pojo.User">
+
+        <selectKey resultType="int"  keyProperty="id" order="AFTER">
+            /*返回当前事务最后产生的id值*/
+            select LAST_INSERT_ID()
+        </selectKey>
+
+        insert into user(username,birthday,sex,address) values(#{username},#{birthday},#{sex},#{address})
+    </insert>
+
+    <update id="updateUser" parameterType="com.sunzhen.mybatis.pojo.User">
+        update user set username=#{username},sex=#{sex},birthday=#{birthday},address=#{address} where id=#{id}
+    </update>
+
+
+    <delete id="deleteUser" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+</mapper>
